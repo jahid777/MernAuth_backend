@@ -43,7 +43,7 @@ client.connect((err) => {
   app.get("/getAuthData", async (req, res) => {
     authenticationCollection
       .find({
-        status: "login",
+        status: req.query?.status,
         phoneNumber: req.query?.phoneNumber,
         password: req.query?.password,
         active: true,
@@ -59,6 +59,23 @@ client.connect((err) => {
           res.send(documents);
         }
       });
+  });
+
+  //user update status logout  to login
+  app.patch("/userStatus/:id", async (req, res) => {
+    const statusId = req.params.id;
+    const value = req.body.value;
+
+    try {
+      const result = await authenticationCollection.updateOne(
+        { _id: ObjectId(statusId) },
+        { $set: { status: value } }
+      );
+      res.sendStatus(200);
+    } catch (error) {
+      console.log("err", error);
+      res.sendStatus(500);
+    }
   });
 
   //password Edit
