@@ -43,7 +43,6 @@ client.connect((err) => {
   app.get("/getAuthData", async (req, res) => {
     authenticationCollection
       .find({
-        status: req.query?.status,
         phoneNumber: req.query?.phoneNumber,
         password: req.query?.password,
         active: true,
